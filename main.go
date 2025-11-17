@@ -12,6 +12,7 @@ import (
 
 	"go.uber.org/zap"
 
+	"github.com/ppxb/oreo-admin-go/internal/router"
 	"github.com/ppxb/oreo-admin-go/pkg/config"
 	"github.com/ppxb/oreo-admin-go/pkg/logger"
 )
@@ -25,9 +26,18 @@ func main() {
 	log := logger.Init(cfg.Log)
 	defer log.Sync()
 
+	// db, err := database.InitMySQL(cfg.MySQL)
+	// if err != nil {
+	// 	log.Fatal("初始化数据库失败", zap.Error(err))
+	// }
+	// sqlDB, _ := db.DB()
+	// defer sqlDB.Close()
+
+	r := router.NewRouter(log, cfg)
+
 	srv := &http.Server{
 		Addr:           fmt.Sprintf(":%d", cfg.Server.Port),
-		Handler:        nil,
+		Handler:        r,
 		ReadTimeout:    time.Duration(cfg.Server.ReadTimeout) * time.Second,
 		WriteTimeout:   time.Duration(cfg.Server.WriteTimeout) * time.Second,
 		MaxHeaderBytes: 1 << 20,

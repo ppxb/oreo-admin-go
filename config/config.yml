@@ -13,7 +13,7 @@ mysql:
   max_idle_conns: 10
   max_open_conns: 100
   conn_max_lifetime: 3600
-  log_level: info  # silent, error, warn, info
+  log_level: info
 
 redis:
   host: 127.0.0.1
@@ -23,12 +23,12 @@ redis:
 
 jwt:
   secret: your-secret-key-change-in-production
-  expire_time: 24  # 小时
+  expire_time: 24
 
 log:
   level: info
   filename: ./logs/app.log
-  max_size: 100    # MB
+  max_size: 100
   max_backups: 3
-  max_age: 7       # 天
+  max_age: 7
   compress: true

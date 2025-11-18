@@ -2,8 +2,6 @@ package log
 
 import (
 	"io"
-
-	"go.uber.org/zap"
 )
 
 type FileWithLineNumOptions struct {
@@ -99,7 +97,7 @@ func WithLineNumVersion(flag bool) func(*Options) {
 func getOptionsOrSetDefault(options *Options) *Options {
 	if options == nil {
 		return &Options{
-			level:          Level(zap.DebugLevel),
+			level:          Level(5),
 			lineNum:        true,
 			lineNumLevel:   1,
 			lineNumVersion: true,

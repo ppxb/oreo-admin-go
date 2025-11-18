@@ -14,17 +14,25 @@ import (
 
 	"github.com/ppxb/oreo-admin-go/internal/router"
 	"github.com/ppxb/oreo-admin-go/pkg/config"
-	"github.com/ppxb/oreo-admin-go/pkg/logger"
+	"github.com/ppxb/oreo-admin-go/pkg/log"
+	"github.com/ppxb/oreo-admin-go/pkg/tracing"
 )
 
 func main() {
+	var ctx = tracing.NewId(nil)
+
+	defer func() {
+		if err := recover(); err != nil {
+			log.WithContext(ctx).Error("panic", zap.Any("err", err))
+		}
+	}()
+
 	cfg, err := config.Load()
 	if err != nil {
-		panic(fmt.Sprintf("加载配置失败: %v", err))
+		log.WithError(err).Fatal("[CONFIG] Failed to load configuration")
 	}
 
-	log := logger.Init(cfg.Log)
-	defer log.Sync()
+	logger := log.WithContext(ctx)
 
 	// db, err := database.InitMySQL(cfg.MySQL)
 	// if err != nil {
@@ -33,7 +41,7 @@ func main() {
 	// sqlDB, _ := db.DB()
 	// defer sqlDB.Close()
 
-	r := router.NewRouter(log, cfg)
+	r := router.NewRouter(cfg)
 
 	srv := &http.Server{
 		Addr:           fmt.Sprintf(":%d", cfg.Server.Port),
@@ -44,13 +52,9 @@ func main() {
 	}
 
 	go func() {
-		log.Info(
-			"服务器启动",
-			zap.String("addr", srv.Addr),
-			zap.String("env", cfg.Server.Env),
-		)
+		logger.Info("[INIT] Starting Oreo Admin Server...")
 		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-			log.Fatal("服务器启动失败", zap.Error(err))
+			logger.WithError(err).Fatal("[SERVER] Failed to start server")
 		}
 	}()
 
@@ -58,14 +62,14 @@ func main() {
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
 
-	log.Info("正在关闭服务器...")
+	logger.Info("[SHUTDOWN] Shutting down server gracefully...")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	if err := srv.Shutdown(ctx); err != nil {
-		log.Fatal("服务器强制关闭", zap.Error(err))
+		logger.WithError(err).Error("[SHUTDOWN] Server forced to shutdown")
 	}
 
-	log.Info("服务器已退出")
+	logger.Info("[SHUTDOWN] Server exited")
 }

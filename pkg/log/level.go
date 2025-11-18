@@ -7,7 +7,7 @@ import (
 type Level uint32
 
 const (
-	PanicLevel = iota
+	PanicLevel Level = iota
 	FatalLevel
 	ErrorLevel
 	WarnLevel

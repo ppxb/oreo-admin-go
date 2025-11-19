@@ -2,18 +2,21 @@ package main
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
+	"runtime"
+	"runtime/debug"
+	"strings"
 	"syscall"
 	"time"
 
-	"go.uber.org/zap"
+	"github.com/pkg/errors"
 
 	"github.com/ppxb/oreo-admin-go/internal/router"
 	"github.com/ppxb/oreo-admin-go/pkg/config"
+	"github.com/ppxb/oreo-admin-go/pkg/global"
 	"github.com/ppxb/oreo-admin-go/pkg/log"
 	"github.com/ppxb/oreo-admin-go/pkg/tracing"
 )
@@ -23,9 +26,12 @@ func main() {
 
 	defer func() {
 		if err := recover(); err != nil {
-			log.WithContext(ctx).Error("panic", zap.Any("err", err))
+			log.WithContext(ctx).WithError(errors.Errorf("%v", err)).Error("[SERVER] Failed to start server, stack is: %s", string(debug.Stack()))
 		}
 	}()
+
+	_, file, _, _ := runtime.Caller(0)
+	global.RuntimeRoot = strings.TrimSuffix(file, "main.go")
 
 	cfg, err := config.Load()
 	if err != nil {

@@ -9,8 +9,6 @@ import (
 	"github.com/ppxb/oreo-admin-go/pkg/log"
 )
 
-// TODO: NEED REFACTOR
-
 type ConfBox struct {
 	Ctx context.Context
 	Fs  embed.FS
@@ -36,11 +34,11 @@ func (c ConfBox) buildPath(filename string) string {
 func (c ConfBox) readFromFileSystem(path string) []byte {
 	data, err := os.ReadFile(path)
 	if err != nil {
-		log.WithContext(c.Ctx).WithError(err).Debug("[CONF BOX] Read file %s from file system failed, will try embed", path)
+		log.WithContext(c.Ctx).WithError(err).Warn("[CONF BOX] Read file %s from file system failed, will try embed", path)
 		return nil
 	}
 
-	log.WithContext(c.Ctx).Debug("[CONF BOX] Read file %s from file system success", path)
+	log.WithContext(c.Ctx).Info("[CONF BOX] Read file %s from file system success", path)
 	return data
 }
 
@@ -56,6 +54,6 @@ func (c ConfBox) readFromEmbed(path string) []byte {
 		return nil
 	}
 
-	log.WithContext(c.Ctx).Debug("[CONF BOX] Read file %s from embed success", path)
+	log.WithContext(c.Ctx).Info("[CONF BOX] Read file %s from embed success", path)
 	return data
 }

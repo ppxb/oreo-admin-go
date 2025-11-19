@@ -9,6 +9,8 @@ import (
 	"github.com/ppxb/oreo-admin-go/pkg/log"
 )
 
+// TODO: NEED REFACTOR
+
 func EnvToInterface(options ...func(*EnvOptions)) {
 	ops := getOptionsOrSetDefault(nil)
 	for _, f := range options {

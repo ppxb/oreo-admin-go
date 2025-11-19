@@ -8,6 +8,8 @@ import (
 	"unicode"
 )
 
+// TODO: NEED REFACTOR
+
 var (
 	camelRe = regexp.MustCompile("(_)([a-zA-Z]+)")
 	snakeRe = regexp.MustCompile("([a-z0-9])([A-Z])")

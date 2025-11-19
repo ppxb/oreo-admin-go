@@ -7,7 +7,6 @@ import (
 func Contains(arr interface{}, item interface{}) bool {
 	switch arr.(type) {
 	case []uint:
-		// funk not implement ContainsUint
 		if val, ok := item.(uint); ok {
 			return ContainsUint(arr.([]uint), val)
 		}
@@ -47,7 +46,6 @@ func Contains(arr interface{}, item interface{}) bool {
 	return funk.Contains(arr, item)
 }
 
-// ContainsUint whether the array contains uint
 func ContainsUint(arr []uint, item uint) bool {
 	for _, v := range arr {
 		if v == item {
@@ -57,7 +55,6 @@ func ContainsUint(arr []uint, item uint) bool {
 	return false
 }
 
-// ContainsUintIndex whether the array contains uint return index or return -1
 func ContainsUintIndex(arr []uint, item uint) int {
 	for i, v := range arr {
 		if v == item {
@@ -67,7 +64,6 @@ func ContainsUintIndex(arr []uint, item uint) int {
 	return -1
 }
 
-// ContainsUintThenRemove whether the array contains uint and remove it
 func ContainsUintThenRemove(arr []uint, item uint) []uint {
 	index := ContainsUintIndex(arr, item)
 	if index >= 0 {

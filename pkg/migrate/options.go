@@ -20,8 +20,8 @@ type Options struct {
 
 func WithCtx(ctx context.Context) func(*Options) {
 	return func(options *Options) {
-		if !utils.InterfaceIsNil(options.ctx) {
-			getOptionsOrSetDefault(options).ctx = options.ctx
+		if !utils.InterfaceIsNil(ctx) {
+			getOptionsOrSetDefault(options).ctx = ctx
 		}
 	}
 }

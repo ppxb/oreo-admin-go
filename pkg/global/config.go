@@ -1,7 +1,7 @@
 package global
 
 import (
-	"gorm.io/driver/mysql"
+	"github.com/go-sql-driver/mysql"
 
 	"github.com/ppxb/oreo-admin-go/pkg/log"
 )

@@ -18,7 +18,7 @@ import (
 var conf embed.FS
 
 func main() {
-	var ctx = tracing.NewId(nil)
+	ctx := tracing.NewId(nil)
 
 	defer func() {
 		if err := recover(); err != nil {
@@ -30,4 +30,5 @@ func main() {
 	global.RuntimeRoot = strings.TrimSuffix(file, "main.go")
 
 	initialize.Config(ctx, conf)
+	initialize.Mysql(ctx)
 }

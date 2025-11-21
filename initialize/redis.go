@@ -12,6 +12,8 @@ import (
 	"github.com/ppxb/oreo-admin-go/pkg/query"
 )
 
+// TODO: NEED REFACTOR(NO CONNECTION FAILED DESCRIPTION LIKE PASSWORD ERROR OR ETC.)
+
 func Redis(ctx context.Context) {
 	if !global.Conf.Redis.Enable {
 		log.WithContext(ctx).Info("[INIT] Redis is not enabled")

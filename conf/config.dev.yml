@@ -66,7 +66,7 @@ redis:
   # redis://[:password@]host[:port][/dbnumber]
   # redis-socket://[:password@]path[?db=dbnumber]
   # redis-sentinel://[:password@]host1[:port][,host2:[:port]][,hostN:[:port]][?master=masterName]
-  uri: 'redis://127.0.0.1:6379/0'
+  uri: 'redis://:123456@127.0.0.1:6379/0'
   # binlog cache key
   binlog-pos: mysql_binlog_pos
   # enable redis

@@ -31,4 +31,5 @@ func main() {
 
 	initialize.Config(ctx, conf)
 	initialize.Mysql(ctx)
+	initialize.Redis(ctx)
 }
